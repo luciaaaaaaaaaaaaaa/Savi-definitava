@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 
+/**
+ * RegistroPersonal
+ * Formulario simple para registrar usuarios individuales.
+ * Envía los datos al endpoint `POST /api/users/register`.
+ */
 export default function RegistroPersonal({ onBack }) {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [msg, setMsg] = useState('');
 
   const handle = (k, v) => setForm(p => ({ ...p, [k]: v }));
 
+  // submit: llama al endpoint de registro de usuarios
   const submit = async (e) => {
     e.preventDefault();
     setMsg('');

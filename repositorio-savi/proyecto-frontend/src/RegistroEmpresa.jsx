@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 
+/**
+ * RegistroEmpresa
+ * Componente de ejemplo para el registro de empresas. Envía los datos
+ * al endpoint `POST /api/users/register-company` y muestra mensajes
+ * de éxito o error.
+ * Parámetros:
+ * - onBack: callback para volver a la pantalla anterior
+ */
 export default function RegistroEmpresa({ onBack }) {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [msg, setMsg] = useState('');
 
   const handle = (k, v) => setForm(p => ({ ...p, [k]: v }));
 
+  // submit: envía los datos al backend
   const submit = async (e) => {
     e.preventDefault();
     setMsg('');

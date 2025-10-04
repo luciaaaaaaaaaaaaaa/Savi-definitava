@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 
-// Hook simple para proporcionar user e isAuthenticated al resto de la app.
-// Ajusta según tu lógica real (llamadas a la API, refresh tokens, etc.).
+// useAuth
+// Hook ligero que expone el usuario actual y el estado de autenticación.
+// Actualmente lee token/user desde localStorage. En una app real se debería
+// validar el token contra el backend o refrescarlo según sea necesario.
 export function useAuth() {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     try {
+      // Si hay token en localStorage, consideramos al usuario autenticado
       const token = localStorage.getItem('token');
       const storedUser = localStorage.getItem('user');
       if (token) {
@@ -26,7 +29,10 @@ export function useAuth() {
   return { user, isAuthenticated };
 }
 
-// Funciones auxiliares para registro (llaman al backend)
+// registerUser / registerCompany
+// Funciones auxiliares que llaman al backend para crear usuarios o empresas.
+// Devuelven el JSON de la respuesta (éxito o error). No hacen almacenamiento
+// automático de token/usuario; eso se debería gestionar donde se necesite.
 export async function registerUser(data) {
   try {
     const res = await fetch('http://localhost:3000/api/users/register', {
