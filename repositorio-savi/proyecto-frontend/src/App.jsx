@@ -3,12 +3,12 @@ import { useAuth } from './hooks/useAuth'
 import Inicio from './Inicio.jsx'
 import Registro from './Registro.jsx'
 import RegistroPersonal from './RegistroPersonal.jsx'
+import RegistroEmpresa from './RegistroEmpresa.jsx'
 import InicioUsuario from './InicioUsuario.jsx'
 import Perfil from './Perfil.jsx'
 import EditarPerfil from './EditarPerfil.jsx'
 import Membresias from './Membresias.jsx'
 import FormaPago from './FormaPago.jsx'
-import RegistroEmpresa from './RegistroEmpresa.jsx'
 import './App.css'
 
 export default function App() {
