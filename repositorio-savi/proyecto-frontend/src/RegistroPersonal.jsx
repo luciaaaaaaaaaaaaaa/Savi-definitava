@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import './RegistroPersonal.css';
 
+// RegistroPersonal
+// - onBack: callback para volver atrás
+// Este componente maneja un formulario simple de registro personal.
+// Uso: no toca la lógica global, sólo envia al endpoint y muestra mensaje.
+
 /**
  * RegistroPersonal
  * Formulario simple para registrar usuarios individuales.
@@ -10,9 +15,12 @@ export default function RegistroPersonal({ onBack }) {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [msg, setMsg] = useState('');
 
+  // handle: actualiza el campo del formulario (nombre, email, password)
   const handle = (k, v) => setForm(p => ({ ...p, [k]: v }));
 
   // submit: llama al endpoint de registro de usuarios
+  // submit: cuando apretás 'Registrarse' se hace el POST al backend
+  // muestra mensajes de éxito/error en `msg`
   const submit = async (e) => {
     e.preventDefault();
     setMsg('');

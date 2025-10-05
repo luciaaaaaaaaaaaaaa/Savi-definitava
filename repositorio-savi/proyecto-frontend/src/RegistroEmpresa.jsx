@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import './RegistroEmpresa.css';
 
+// RegistroEmpresa
+// - onBack: callback para volver atrás
+// Componente simple para registrar una empresa. Mantengo la lógica igual,
+// sólo agrego comentarios para que quede claro qué hace cada parte.
+
 /**
  * RegistroEmpresa
  * Componente de ejemplo para el registro de empresas. Envía los datos
@@ -13,9 +18,12 @@ export default function RegistroEmpresa({ onBack }) {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [msg, setMsg] = useState('');
 
+  // handle: actualiza un campo del form (name, email, password)
   const handle = (k, v) => setForm(p => ({ ...p, [k]: v }));
 
   // submit: envía los datos al backend
+  // submit: envía los datos al endpoint de registro de empresas
+  // y muestra `msg` con el resultado
   const submit = async (e) => {
     e.preventDefault();
     setMsg('');

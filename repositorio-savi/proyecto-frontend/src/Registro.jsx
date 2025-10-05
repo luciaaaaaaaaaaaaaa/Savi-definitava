@@ -1,6 +1,12 @@
 import React from 'react';
 import './registro.css';
 
+// Componente `Registro`
+// - Props:
+//   onBack: función que te devuelve a la pantalla anterior
+//   onGoRegistroPersonal: función para ir al formulario de usuario
+//   onGoRegistroEmpresa: función para ir al formulario de empresa
+// Este componente sólo muestra las opciones de registro (no hace lógica de envío).
 export default function Registro({ onBack, onGoRegistroPersonal, onGoRegistroEmpresa }) {
   return (
     <div className="registro">
@@ -26,6 +32,7 @@ export default function Registro({ onBack, onGoRegistroPersonal, onGoRegistroEmp
         </div>
 
         <div className="registro__selector-options">
+          {/* Botón: cuando lo apretás, vas al registro personal */}
           <button className="registro__option" onClick={onGoRegistroPersonal}>
             <span className="registro__option-label">
               <span className="registro__option-title">Registro personal</span>
@@ -36,6 +43,7 @@ export default function Registro({ onBack, onGoRegistroPersonal, onGoRegistroEmp
             </span>
           </button>
 
+          {/* Botón: cuando lo apretás, vas al registro de empresa */}
           <button className="registro__option" onClick={onGoRegistroEmpresa}>
             <span className="registro__option-label">
               <span className="registro__option-title">Registro empresarial</span>
