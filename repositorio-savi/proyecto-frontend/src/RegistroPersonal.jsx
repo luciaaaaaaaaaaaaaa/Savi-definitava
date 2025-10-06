@@ -3,23 +3,30 @@ import './RegistroPersonal.css';
 import { FaInstagram, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { MdMailOutline } from 'react-icons/md';
 
-// Mantengo la lógica de submit tal como estaba, sólo cambio el markup
+// Comentarios donde explico rápido lo que hace cada parte.
+// Este componente muestra el formulario para registrar un usuario personal.
+// No toco la lógica del submit (la dejo igual), solo comento para que se entienda.
 export default function RegistroPersonal({ onBack, onGoInicio, onGoInicioUsuario }) {
   const [form, setForm] = useState({ nombre: '', email: '', password: '', password2: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // handleChange: guarda lo que escribe el usuario en el state "form".
+  // Uso el mismo nombre de los inputs para mapear directo al objeto.
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // submit: al apretar "Registrarse" se arma la petición al backend.
+  // Mantengo la lógica igual: validar contraseñas, enviar POST a /api/users/register.
   const submit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    // Validaciones mínimas (igual que antes: no cambiar la lógica del backend)
+    // Validaciones mínimas (igual que antes: no cambiar la lógica del backend, que puso el profe)
+    // Validación simple en el frontend: que las dos contraseñas sean iguales.
     if (form.password !== form.password2) {
       setError('Las contraseñas no coinciden');
       setLoading(false);
@@ -34,12 +41,15 @@ export default function RegistroPersonal({ onBack, onGoInicio, onGoInicioUsuario
       });
       const data = await res.json();
       if (res.ok) {
-        // dejo el comportamiento como antes: mostrar mensaje y opcionalmente redirigir si prop viene
+        // Si el backend responde OK, hago lo mismo que antes: opcionalmente redirigir
+        // (el prop onGoInicioUsuario venía de donde se usa este componente).
         if (onGoInicioUsuario) onGoInicioUsuario();
       } else {
+        // Si el servidor responde con error (p.ej. 'El usuario ya existe'), lo muestro.
         setError(data.error || 'Error al registrarse');
       }
     } catch (err) {
+      // Si falla la conexión, mensaje claro para el usuario.
       setError('Error de conexión. Intenta nuevamente.');
     } finally {
       setLoading(false);
@@ -48,9 +58,12 @@ export default function RegistroPersonal({ onBack, onGoInicio, onGoInicioUsuario
 
   return (
     <div className="registroPersonal">
+      {/* Header: botones de navegación y título. */}
       <section className="registroPersonal__hero">
         <nav className="registroPersonal__nav">
+          {/* Botón para volver al inicio general */}
           <button className="registroPersonal__btn registroPersonal__btn--primary" onClick={onGoInicio}>Inicio</button>
+          {/* Botón para volver a la pantalla anterior */}
           <button className="registroPersonal__btn" onClick={onBack}>Volver atrás</button>
         </nav>
         <img
@@ -64,12 +77,14 @@ export default function RegistroPersonal({ onBack, onGoInicio, onGoInicioUsuario
       <div className="registroPersonal__intro">Te pedimos que completes los siguientes campos para poder disfrutar de SAVI</div>
 
       <section className="registroPersonal__form-wrapper">
+        {/* Si hay error lo muestro arriba del formulario */}
         {error && (
           <div className="error-message" style={{ color: 'red', marginBottom: '20px', textAlign: 'center' }}>
             {error}
           </div>
         )}
 
+        {/* Formulario: campos controlados usando `form` en el state */}
         <form className="registroPersonal__form" onSubmit={submit}>
           <label className="registroPersonal__label" htmlFor="rp-nombre">Nombre</label>
           <input
@@ -113,6 +128,7 @@ export default function RegistroPersonal({ onBack, onGoInicio, onGoInicioUsuario
             required
           />
 
+          {/* Botón de submit: muestra estado de carga y previene doble submit */}
           <button type="submit" className="registroPersonal__submit" disabled={loading}>
             {loading ? 'Registrando...' : 'Registrarse'}
           </button>

@@ -3,7 +3,9 @@ import './RegistroEmpresa.css';
 import { FaInstagram, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { MdMailOutline } from 'react-icons/md';
 
-// Mantengo la lógica de submit; cambio sólo el layout para que coincida con las capturas
+
+// Este componente es el formulario para registrar empresas. Mantengo la lógica,
+// solo agrego comentarios para que se entienda qué hace cada cosa.
 export default function RegistroEmpresa({ onBack }) {
   const [form, setForm] = useState({ name: '', email: '', pass: '', pass2: '' });
   const [msg, setMsg] = useState('');
@@ -15,9 +17,13 @@ export default function RegistroEmpresa({ onBack }) {
     d: { pasillos: false, ramp: false, elevator: false }
   });
 
+  // handle: actualiza los campos del formulario (name, email, pass, ...)
   const handle = (k, v) => setForm(p => ({ ...p, [k]: v }));
+  // toggle: cambia el valor de los checks de accesibilidad (a,b,c,d)
   const toggle = (k, f) => setAcc(p => ({ ...p, [k]: { ...p[k], [f]: !p[k][f] } }));
 
+  // submit: arma el payload y hace POST al endpoint de registro de empresas.
+  // Importante: no cambio la ruta ni la lógica de validación backend.
   const submit = async (e) => {
     e.preventDefault();
     setMsg('');
@@ -28,9 +34,11 @@ export default function RegistroEmpresa({ onBack }) {
     }
 
     try {
+      // Evito doble envío marcando loading
       setLoading(true);
+      // Aquí le agrego 'accessibility' al payload para que se guarden los checks
       const payload = { name: form.name, email: form.email, password: form.pass, accessibility: acc };
-      // console log para debugging en la consola del navegador
+      // Para debug: ver en la consola del navegador exactamente qué mando
       console.log('RegistroEmpresa payload:', payload);
       const res = await fetch('http://localhost:3000/api/users/register-company', {
         method: 'POST',
@@ -38,10 +46,12 @@ export default function RegistroEmpresa({ onBack }) {
         body: JSON.stringify(payload)
       });
       const data = await res.json();
+      // Ver en consola la respuesta del servidor (status + body)
       console.log('RegistroEmpresa response:', res.status, data);
       if (res.ok) {
         setMsg('Empresa registrada');
       } else {
+        // Si el backend dice 'El usuario ya existe' lo mostramos acá
         setMsg(data.error || 'Error');
       }
     } catch (err) {
@@ -54,6 +64,7 @@ export default function RegistroEmpresa({ onBack }) {
 
   return (
     <div className="perfil-emp-page">
+      {/* Header con nav y título */}
       <header className="pe-hero">
         <div className="nav-links">
           <button onClick={() => (window.location.hash = '#inicio')}>Inicio</button>
@@ -70,7 +81,8 @@ export default function RegistroEmpresa({ onBack }) {
       <div className="pe-subtitle">Te pedimos que completes los siguientes campos para poder iniciarte en SAVI</div>
 
       <main className="pe-main">
-        <form className="pe-card form" onSubmit={submit}>
+  {/* Formulario principal para datos de la empresa */}
+  <form className="pe-card form" onSubmit={submit}>
           <label>Nombre de la empresa</label>
           <input className="pe-input" placeholder="" value={form.name} name="name" onChange={e=>handle('name', e.target.value)} />
 
@@ -83,8 +95,8 @@ export default function RegistroEmpresa({ onBack }) {
           <label>Confirmar contraseña</label>
           <input className="pe-input" type="password" value={form.pass2} name="pass2" onChange={e=>handle('pass2', e.target.value)} />
 
+          {/* Botón de envío y notas de ayuda */}
           <button className="pe-submit" type="submit" disabled={loading || !form.name || !form.email || form.pass !== form.pass2}>{loading ? 'Enviando...' : 'Ingresar'}</button>
-          {/* Nota para el usuario: indicamos por qué el botón puede estar deshabilitado */}
           {(!form.name || !form.email) && <div style={{marginTop:8, color:'#666', textAlign:'center'}}>Completa nombre y email para continuar</div>}
           {form.pass !== form.pass2 && <div style={{marginTop:8, color:'red', textAlign:'center'}}>Las contraseñas deben coincidir</div>}
           {msg && <div style={{marginTop:12, color: msg.toLowerCase().includes('error') || msg.toLowerCase().includes('usuario') || msg.toLowerCase().includes('conex') ? 'red' : 'green', textAlign:'center'}}>{msg}</div>}
