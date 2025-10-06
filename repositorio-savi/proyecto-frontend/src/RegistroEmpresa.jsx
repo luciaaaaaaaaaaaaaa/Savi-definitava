@@ -7,6 +7,7 @@ import { MdMailOutline } from 'react-icons/md';
 export default function RegistroEmpresa({ onBack }) {
   const [form, setForm] = useState({ name: '', email: '', pass: '', pass2: '' });
   const [msg, setMsg] = useState('');
+  const [loading, setLoading] = useState(false);
   const [acc, setAcc] = useState({
     a: { pasillos: false, ramp: false, elevator: true },
     b: { pasillos: false, ramp: false, elevator: false },
@@ -27,16 +28,27 @@ export default function RegistroEmpresa({ onBack }) {
     }
 
     try {
-      const payload = { name: form.name, email: form.email, password: form.pass };
+      setLoading(true);
+      const payload = { name: form.name, email: form.email, password: form.pass, accessibility: acc };
+      // console log para debugging en la consola del navegador
+      console.log('RegistroEmpresa payload:', payload);
       const res = await fetch('http://localhost:3000/api/users/register-company', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
       const data = await res.json();
-      if (res.ok) setMsg('Empresa registrada'); else setMsg(data.error || 'Error');
+      console.log('RegistroEmpresa response:', res.status, data);
+      if (res.ok) {
+        setMsg('Empresa registrada');
+      } else {
+        setMsg(data.error || 'Error');
+      }
     } catch (err) {
+      console.error('RegistroEmpresa fetch error:', err);
       setMsg('Error de conexión');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,8 +83,11 @@ export default function RegistroEmpresa({ onBack }) {
           <label>Confirmar contraseña</label>
           <input className="pe-input" type="password" value={form.pass2} name="pass2" onChange={e=>handle('pass2', e.target.value)} />
 
-          <button className="pe-submit" type="submit">Ingresar</button>
-          {msg && <div style={{marginTop:12, color: msg.includes('conex') ? 'red' : 'green', textAlign:'center'}}>{msg}</div>}
+          <button className="pe-submit" type="submit" disabled={loading || !form.name || !form.email || form.pass !== form.pass2}>{loading ? 'Enviando...' : 'Ingresar'}</button>
+          {/* Nota para el usuario: indicamos por qué el botón puede estar deshabilitado */}
+          {(!form.name || !form.email) && <div style={{marginTop:8, color:'#666', textAlign:'center'}}>Completa nombre y email para continuar</div>}
+          {form.pass !== form.pass2 && <div style={{marginTop:8, color:'red', textAlign:'center'}}>Las contraseñas deben coincidir</div>}
+          {msg && <div style={{marginTop:12, color: msg.toLowerCase().includes('error') || msg.toLowerCase().includes('usuario') || msg.toLowerCase().includes('conex') ? 'red' : 'green', textAlign:'center'}}>{msg}</div>}
         </form>
 
         <section className="pe-card acc">
