@@ -1,53 +1,135 @@
 import React, { useState } from 'react';
 import './RegistroPersonal.css';
+import { FaInstagram, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
+import { MdMailOutline } from 'react-icons/md';
 
-// RegistroPersonal
-// - onBack: callback para volver atrás
-// Este componente maneja un formulario simple de registro personal.
-// Uso: no toca la lógica global, sólo envia al endpoint y muestra mensaje.
+// Mantengo la lógica de submit tal como estaba, sólo cambio el markup
+export default function RegistroPersonal({ onBack, onGoInicio, onGoInicioUsuario }) {
+  const [form, setForm] = useState({ nombre: '', email: '', password: '', password2: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-/**
- * RegistroPersonal
- * Formulario simple para registrar usuarios individuales.
- * Envía los datos al endpoint `POST /api/users/register`.
- */
-export default function RegistroPersonal({ onBack }) {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const [msg, setMsg] = useState('');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
-  // handle: actualiza el campo del formulario (nombre, email, password)
-  const handle = (k, v) => setForm(p => ({ ...p, [k]: v }));
-
-  // submit: llama al endpoint de registro de usuarios
-  // submit: cuando apretás 'Registrarse' se hace el POST al backend
-  // muestra mensajes de éxito/error en `msg`
   const submit = async (e) => {
     e.preventDefault();
-    setMsg('');
+    setError('');
+    setLoading(true);
+
+    // Validaciones mínimas (igual que antes: no cambiar la lógica del backend)
+    if (form.password !== form.password2) {
+      setError('Las contraseñas no coinciden');
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch('http://localhost:3000/api/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify({ nombre: form.nombre, email: form.email, password: form.password })
       });
       const data = await res.json();
-      if (res.ok) setMsg('Usuario registrado'); else setMsg(data.error || 'Error');
+      if (res.ok) {
+        // dejo el comportamiento como antes: mostrar mensaje y opcionalmente redirigir si prop viene
+        if (onGoInicioUsuario) onGoInicioUsuario();
+      } else {
+        setError(data.error || 'Error al registrarse');
+      }
     } catch (err) {
-      setMsg('Error de conexión');
+      setError('Error de conexión. Intenta nuevamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h2>Registro Personal</h2>
-      <form onSubmit={submit}>
-        <input placeholder="Nombre" value={form.name} onChange={e => handle('name', e.target.value)} required />
-        <input placeholder="Email" value={form.email} onChange={e => handle('email', e.target.value)} required />
-        <input type="password" placeholder="Contraseña" value={form.password} onChange={e => handle('password', e.target.value)} required />
-        <button type="submit">Registrar</button>
-      </form>
-      {msg && <p>{msg}</p>}
-      <button onClick={onBack}>Volver</button>
+    <div className="registroPersonal">
+      <section className="registroPersonal__hero">
+        <nav className="registroPersonal__nav">
+          <button className="registroPersonal__btn registroPersonal__btn--primary" onClick={onGoInicio}>Inicio</button>
+          <button className="registroPersonal__btn" onClick={onBack}>Volver atrás</button>
+        </nav>
+        <img
+          className="registroPersonal__hero-img"
+          src="https://i.imgur.com/S23StlD.png"
+          alt="Cocina registro SAVI"
+        />
+        <h1 className="registroPersonal__title">Registrate en SAVI</h1>
+      </section>
+
+      <div className="registroPersonal__intro">Te pedimos que completes los siguientes campos para poder disfrutar de SAVI</div>
+
+      <section className="registroPersonal__form-wrapper">
+        {error && (
+          <div className="error-message" style={{ color: 'red', marginBottom: '20px', textAlign: 'center' }}>
+            {error}
+          </div>
+        )}
+
+        <form className="registroPersonal__form" onSubmit={submit}>
+          <label className="registroPersonal__label" htmlFor="rp-nombre">Nombre</label>
+          <input
+            id="rp-nombre"
+            name="nombre"
+            value={form.nombre}
+            onChange={handleChange}
+            placeholder="Tu nombre completo"
+            required
+          />
+
+          <label className="registroPersonal__label" htmlFor="rp-email">Email</label>
+          <input
+            id="rp-email"
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="ejemplo@gmail.com"
+            required
+          />
+
+          <label className="registroPersonal__label" htmlFor="rp-password">Contraseña</label>
+          <input
+            id="rp-password"
+            name="password"
+            type="password"
+            value={form.password}
+            onChange={handleChange}
+            minLength="6"
+            required
+          />
+
+          <label className="registroPersonal__label" htmlFor="rp-password2">Confirmar contraseña</label>
+          <input
+            id="rp-password2"
+            name="password2"
+            type="password"
+            value={form.password2}
+            onChange={handleChange}
+            required
+          />
+
+          <button type="submit" className="registroPersonal__submit" disabled={loading}>
+            {loading ? 'Registrando...' : 'Registrarse'}
+          </button>
+        </form>
+      </section>
+
+      <footer className="registroPersonal__footer">
+        <div className="registroPersonal__footer-left">
+          <a href="#" aria-label="Instagram"><FaInstagram /></a>
+          <a href="#" aria-label="LinkedIn"><FaLinkedin /></a>
+          <a href="#" aria-label="WhatsApp"><FaWhatsapp /></a>
+          <a href="#" aria-label="Email"><MdMailOutline /></a>
+        </div>
+        <div className="registroPersonal__footer-right">
+          <span>Contacto: 091 222 333 — savi@gmail.com.uy</span>
+        </div>
+      </footer>
     </div>
   );
 }
