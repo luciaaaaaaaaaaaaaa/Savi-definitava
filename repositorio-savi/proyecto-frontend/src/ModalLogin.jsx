@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "./hooks/useAuth";
+import { useAuth, login } from "./hooks/useAuth";
 import "./ModalLogin.css";
 
 const ModalLogin = ({ isOpen, onClose, onLoginSuccess }) => {
@@ -7,7 +7,7 @@ const ModalLogin = ({ isOpen, onClose, onLoginSuccess }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   if (!isOpen) return null;
 
@@ -32,7 +32,7 @@ const ModalLogin = ({ isOpen, onClose, onLoginSuccess }) => {
         setError(result.error || "Error al iniciar sesión");
       }
     } catch (err) {
-      setError("Error de conexión. Intenta nuevamente.");
+      setError("Error de conexión. Intenta nuevamente." + err.message);
     } finally {
       setLoading(false);
     }
