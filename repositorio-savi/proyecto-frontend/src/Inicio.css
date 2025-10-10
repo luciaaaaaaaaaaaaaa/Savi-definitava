@@ -362,6 +362,18 @@
   color: #0077b6;
 }
 
+/* Fix for react-icons rendering as letters: target svg inside footer-socials */
+.footer-socials svg,
+.footer-socials a svg,
+.registroPersonal__footer-left svg,
+.inicioUsuario__footer-left svg {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  fill: currentColor;
+}
+
 .faq {
   display: flex;
   flex-direction: column;

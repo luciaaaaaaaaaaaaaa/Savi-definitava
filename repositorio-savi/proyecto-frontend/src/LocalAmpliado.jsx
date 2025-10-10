@@ -3,6 +3,7 @@ import "./LocalAmpliado.css";
 import {
   FaMapMarkerAlt,
   FaPhone,
+  FaClock,
   FaInstagram,
   FaLinkedin,
   FaWhatsapp,
@@ -23,6 +24,7 @@ const LocalAmpliado = ({ local, onGoBack }) => {
     telefono: "099 999 999",
     email: "contacto@estrellafresca.com.uy",
     calificacion: 4.5,
+    horario: "Lun a Vie 8:00 - 21:00",
     accesibilidades: [
       "Rampa",
       "Atención prioritaria",
@@ -80,6 +82,14 @@ const LocalAmpliado = ({ local, onGoBack }) => {
 
       <main className="local-main">
         <div className="main-card">
+          <button
+            className="btn-email"
+            onClick={() => setShowEmailForm(!showEmailForm)}
+            aria-label="Enviar email"
+          >
+            Enviar email
+          </button>
+
           <section className="contacto-section">
             <h2>Contacto</h2>
             <div className="contacto-info">
@@ -93,13 +103,12 @@ const LocalAmpliado = ({ local, onGoBack }) => {
                 <span className="contacto-label">Teléfono:</span>
                 <span className="contacto-value">{localData.telefono}</span>
               </div>
+              <div className="contacto-item">
+                <FaClock className="contacto-icon" />
+                <span className="contacto-label">Horario:</span>
+                <span className="contacto-value">{localData.horario || localData.horarios || 'No disponible'}</span>
+              </div>
             </div>
-            <button
-              className="btn-email"
-              onClick={() => setShowEmailForm(!showEmailForm)}
-            >
-              Enviar email
-            </button>
           </section>
 
 

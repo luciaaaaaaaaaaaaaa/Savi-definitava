@@ -121,6 +121,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    position: relative; /* allow absolutely positioned children inside the card */
   }
   
   
@@ -169,18 +170,20 @@
   }
   
   
+  /* email button placed inside the white main-card in the top-right corner */
   .btn-email {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 16px;
+    right: 16px;
     background: #e3f2fd;
     color: #1976d2;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6rem 1rem;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.15s ease;
+    z-index: 5;
   }
   
   
@@ -344,6 +347,15 @@
     gap: 0.25rem;
     color: #666;
     font-size: 0.9rem;
+  }
+
+  /* Footer icons as SVGs */
+  .footer-socials svg {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+    fill: currentColor;
   }
   
   
@@ -522,6 +534,7 @@
     .btn-email {
       position: static;
       margin-top: 1rem;
+      align-self: start;
     }
   }
   

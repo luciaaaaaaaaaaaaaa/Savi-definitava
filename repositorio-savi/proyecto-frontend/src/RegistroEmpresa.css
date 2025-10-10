@@ -196,3 +196,12 @@
 .footer-text {
   font-size: 16px;
 }
+
+/* Footer icon fixes */
+.footer-socials svg {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  fill: currentColor;
+}

@@ -131,6 +131,16 @@
     color: #0a66ff;
 }
 
+/* Ensure svg icons render properly in footers */
+.registroPersonal__footer-left svg,
+.footer-socials svg {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+    fill: currentColor;
+}
+
 @media (max-width: 900px) {
   .registroPersonal__title { 
     font-size: 36px; 

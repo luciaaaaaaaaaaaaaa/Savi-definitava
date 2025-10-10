@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ModalLogin from "./ModalLogin";
 import "./Inicio.css";
+import "./InicioUsuario.css";
 import { FaInstagram } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaWhatsapp } from "react-icons/fa";
@@ -35,32 +36,40 @@ const Inicio = ({ onGoRegistro, onGoInicioUsuario }) => {
 
       <section className="opciones">
         <h2>Locales destacados:</h2>
-        <div className="cards">
-          <div className="opcion-card">
-            <img src="https://i.imgur.com/ZifMmLa.jpeg" alt="Opción 1" />
-            <div className="opcion-card-overlay">
-              <p>Kinko</p>
-              <p>Poctitos</p>
-              <p>Rampa</p>
+        <section className="inicioUsuario__grid">
+          <div
+            className="inicioUsuario__card"
+            style={{ backgroundImage: `url(https://i.imgur.com/ZifMmLa.jpeg)` }}
+          >
+            <div className="inicioUsuario__card-overlay">
+              <div className="inicioUsuario__card-content">
+                <div className="inicioUsuario__card-title">Kinko - Poctitos</div>
+              </div>
             </div>
           </div>
-          <div className="opcion-card">
-            <img src="https://i.imgur.com/ZifMmLa.jpeg" alt="Opción 2" />
-            <div className="opcion-card-overlay">
-              <p>EstrellaFresca</p>
-              <p>Centro</p>
-              <p>Baño adaptado</p>
+
+          <div
+            className="inicioUsuario__card"
+            style={{ backgroundImage: `url(https://i.imgur.com/ZifMmLa.jpeg)` }}
+          >
+            <div className="inicioUsuario__card-overlay">
+              <div className="inicioUsuario__card-content">
+                <div className="inicioUsuario__card-title">EstrellaFresca - Centro</div>
+              </div>
             </div>
           </div>
-          <div className="opcion-card">
-            <img src="https://i.imgur.com/ZifMmLa.jpeg" alt="Opción 3" />
-            <div className="opcion-card-overlay">
-              <p>Geant</p>
-              <p>Carrasco</p>
-              <p>Caja accesible</p>
+
+          <div
+            className="inicioUsuario__card"
+            style={{ backgroundImage: `url(https://i.imgur.com/ZifMmLa.jpeg)` }}
+          >
+            <div className="inicioUsuario__card-overlay">
+              <div className="inicioUsuario__card-content">
+                <div className="inicioUsuario__card-title">Geant - Carrasco</div>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
         <div className="ver-todos-link">
           <button onClick={onGoInicioUsuario} className="link-button">
             ver todos los comercios
