@@ -76,7 +76,7 @@ export default function Perfil({ onEditPerfil }) {
 
               <div>
                 <strong style={{ color: '#666' }}>Dirección:</strong>
-                <p style={{ margin: '5px 0', fontSize: '16px' }}>{empresa.direccion || empresa.direccionPostal || 'No especificado'}</p>
+                <p style={{ margin: '5px 0', fontSize: '16px' }}>{empresa.direccion || empresa.direccional || 'No especificado'}</p>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
