@@ -10,7 +10,7 @@ export const authMiddleware = async (req, res, next) => {
   const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, jwtConfig.secret);
-    const user = await prisma.usuario.findUnique({ where: { usuario_id: decoded.id } });
+    const user = await prisma.user.findUnique({ where: { id: decoded.id } });
     if (!user) throw new Error('Usuario no encontrado');
     const { password, ...userData } = user;
     req.user = userData;
