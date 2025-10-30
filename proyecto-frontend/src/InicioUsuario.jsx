@@ -73,7 +73,7 @@ const InicioUsuario = ({ onBack, onGoInicio }) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('http://localhost:3000/api/empresas');
+  const response = await fetch(buildApiUrl('api/empresas'));
       const data = await response.json();
       console.log("Respuesta de la API:", data); // <-- Agregado para depuración
       if (data.success) {

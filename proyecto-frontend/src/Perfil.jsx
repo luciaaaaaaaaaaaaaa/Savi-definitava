@@ -18,7 +18,8 @@ export default function Perfil({ onEditPerfil }) {
 
   const cargarDatosEmpresa = async () => {
     try {
-      const response = await fetch(buildApiUrl(`empresa/${user.id}`));
+      // Ruta correcta en backend: GET /api/empresas/:id
+      const response = await fetch(buildApiUrl(`api/empresas/${user.id}`));
       const data = await response.json();
       
       if (data.success) {
